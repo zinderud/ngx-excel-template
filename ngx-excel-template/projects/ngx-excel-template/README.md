@@ -1,11 +1,43 @@
 # NgxExcelTemplate
+  excel file template 
+  It organizes your excel files that you have prepared as template.
+  
+  edit {name} as key and value
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.13.
+## usage
+ ```
+  interface KeyValuePair {
+  key: string;
+  value: string;
+}
 
-## Code scaffolding
+@Component({
+  selector: 'app-file-template',
+  templateUrl: './file-template.component.html',
+  styleUrls: ['./file-template.component.scss']
+})
+export class FileTemplateComponent implements OnInit {
+  filepath = 'assets/test.xlsx';
+  constructor(  private excelService: NgxExcelTemplateService) { }
 
-Run `ng generate component component-name --project ngx-excel-template` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-excel-template`.
-> Note: Don't forget to add `--project ngx-excel-template` or else it will be added to the default project in your `angular.json` file. 
+  ngOnInit() {
+  }
+  getFile() {
+
+    this.excelService.exportExcel(this.filepath, 'filename.xlsx', 'Seetname', this.setvalues() );
+  }
+
+  setvalues(): KeyValuePair[] {
+     const data: KeyValuePair[] = [
+       { key: 'name', value: 'John' },
+       { key: 'age', value: '123' },
+
+      ];
+     return data;
+
+  }
+}
+```
 
 ## Build
 
