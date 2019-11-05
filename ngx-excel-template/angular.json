@@ -1,0 +1,164 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "ngx-excel-template": {
+      "projectType": "library",
+      "root": "projects/ngx-excel-template",
+      "sourceRoot": "projects/ngx-excel-template/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-excel-template/tsconfig.lib.json",
+            "project": "projects/ngx-excel-template/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-excel-template/src/test.ts",
+            "tsConfig": "projects/ngx-excel-template/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-excel-template/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-excel-template/tsconfig.lib.json",
+              "projects/ngx-excel-template/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "ngx-excel-template-app": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/ngx-excel-template-app",
+      "sourceRoot": "projects/ngx-excel-template-app/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/ngx-excel-template-app",
+            "index": "projects/ngx-excel-template-app/src/index.html",
+            "main": "projects/ngx-excel-template-app/src/main.ts",
+            "polyfills": "projects/ngx-excel-template-app/src/polyfills.ts",
+            "tsConfig": "projects/ngx-excel-template-app/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "projects/ngx-excel-template-app/src/favicon.ico",
+              "projects/ngx-excel-template-app/src/assets"
+            ],
+            "styles": [
+              "projects/ngx-excel-template-app/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/ngx-excel-template-app/src/environments/environment.ts",
+                  "with": "projects/ngx-excel-template-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ngx-excel-template-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ngx-excel-template-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ngx-excel-template-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-excel-template-app/src/test.ts",
+            "polyfills": "projects/ngx-excel-template-app/src/polyfills.ts",
+            "tsConfig": "projects/ngx-excel-template-app/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-excel-template-app/karma.conf.js",
+            "assets": [
+              "projects/ngx-excel-template-app/src/favicon.ico",
+              "projects/ngx-excel-template-app/src/assets"
+            ],
+            "styles": [
+              "projects/ngx-excel-template-app/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-excel-template-app/tsconfig.app.json",
+              "projects/ngx-excel-template-app/tsconfig.spec.json",
+              "projects/ngx-excel-template-app/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/ngx-excel-template-app/e2e/protractor.conf.js",
+            "devServerTarget": "ngx-excel-template-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ngx-excel-template-app:serve:production"
+            }
+          }
+        }
+      }
+    }},
+  "defaultProject": "ngx-excel-template"
+}
