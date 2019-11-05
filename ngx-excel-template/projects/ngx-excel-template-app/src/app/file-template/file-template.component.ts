@@ -17,11 +17,11 @@ export class FileTemplateComponent implements OnInit {
   ngOnInit() {
   }
   getFile() {
-    this.excelService.onGetFile(this.filepath);
-    this.excelService.exportExcel('filename.xlsx', 'Seetname', this.setvalues() );
+
+    this.excelService.exportExcel(this.filepath, 'filename.xlsx', 'Seetname', this.setvalues() );
   }
 
-  setvalues() {
+  setvalues(): KeyValuePair[] {
      const data: KeyValuePair[] = [
        { key: 'name', value: 'John' },
        { key: 'age', value: '123' },

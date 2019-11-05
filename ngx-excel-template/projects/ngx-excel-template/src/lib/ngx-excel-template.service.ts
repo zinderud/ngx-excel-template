@@ -3,6 +3,7 @@ import * as XLSX from 'xlsx';
 
 import { utils, write, writeFile, read, readFile, WorkBook, WorkSheet, ColInfo } from 'xlsx';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 interface KeyValuePair {
   key: string;
   value: string;
@@ -13,37 +14,37 @@ interface KeyValuePair {
 })
 export class NgxExcelTemplateService {
   filepath = 'assets/test.xlsx';
-  workbook: WorkBook;
-  constructor(private http: HttpClient ) { }
+  private workbook$ = new BehaviorSubject<WorkBook>({ SheetNames: [], Sheets: {} });
+  // workbook: WorkBook;
+  constructor(private http: HttpClient) { }
 
 
- public onGetFile(filepath: string= 'assets/test.xlsx') {
+
+
+
+  public exportExcel(filepath: string, fileName: string, wsName: string, kv: KeyValuePair[]) {
     this.http.get(this.filepath, { responseType: 'blob' }).subscribe(data => {
-     this.fileloadExcel(data);
+      const k = this.xlsAssetBlobToJSON(data).then(x => {
+
+        this.workbook$.next(x);
+
+        kv.forEach(el => {
+          this.set(el.key, el.value);
+        });
+
+        let k = this.BlobToJSON();
+        this.jsonToSheetExport(fileName, wsName, k);
+
+      }).catch((error) => {
+
+      });
     },
       error => {
         console.log(error);
       });
-  }
-
- public fileloadExcel(files) {
-
-    const k = this.xlsAssetBlobToJSON(files).then(x => {
-      this.workbook = x;
-     // console.log(x);
 
 
-    }).catch((error) => {
 
-    });
-  }
-
-  public exportExcel(fileName: string, wsName: string, kv: KeyValuePair[]) {
-    kv.forEach(el => {
-      this.set(el.key, el.value);
-    });
-    this.BlobToJSON();
-    this.jsonToSheetExport(fileName, wsName, this.workbook);
   }
 
   /**
@@ -78,13 +79,16 @@ export class NgxExcelTemplateService {
 
 
 
+    console.log("ws", this.workbook$.value)
 
+    let value = this.workbook$.value
     // Get the WorkSheet name
-    const wsname: string =  this.workbook.SheetNames[0];
+    const wsname: string = value.SheetNames[0];
 
     // Get the WorkSheet n
-    const ws: WorkSheet =  this.workbook.Sheets[wsname];
+    const ws: WorkSheet = value.Sheets[wsname];
 
+    console.log("ws", wsname)
     // Get object properties
     const propArray = this.getCellsReference(ws);
 
@@ -116,16 +120,16 @@ export class NgxExcelTemplateService {
     return propArray;
   }
 
-  public set( name: string, value: any) {
+  public set(name: string, value: any) {
     console.log('burda');
     if (Array.isArray(value)) {
       if (value.length === 0) {
         console.log('burda1');
         return;
       }
-      for (const sheetName of this.workbook.SheetNames) {
+      for (const sheetName of this.workbook$.value.SheetNames) {
 
-        const sheet = this.workbook.Sheets[sheetName];
+        const sheet = this.workbook$.value.Sheets[sheetName];
         const targetRowIndex = this.findRowIndex(name, sheet);
         console.log('burda2');
         if (targetRowIndex >= 0) {
@@ -176,8 +180,9 @@ export class NgxExcelTemplateService {
         }
       }
     } else {
-      for (const sheetName of this.workbook.SheetNames) {
-        const sheet = this.workbook.Sheets[sheetName];
+      for (const sheetName of this.workbook$.value.SheetNames) {
+        console.log('bb');
+        const sheet = this.workbook$.value.Sheets[sheetName];
         for (const cellName in sheet) {
           if (sheet.hasOwnProperty(cellName) && cellName.indexOf('!') !== 0) {
             const cell: XLSX.CellObject = sheet[cellName];
