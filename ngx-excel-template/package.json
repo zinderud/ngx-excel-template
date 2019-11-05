@@ -1,13 +1,13 @@
 {
   "name": "ngx-excel-template",
-  "version": "0.0.0",
+  "version": "0.0.5",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "start": "ng serve ngx-excel-template-app",
+    "build-demo": "ng build ngx-excel-template-app --prod",
+    "build": "ng build ngx-excel-template",
+    "test": "ng test ngx-excel-template",
+    "link-lib": "npm link dist/ngx-excel-template && npm link ngx-excel-template",
+    "publish-lib": "npm publish dist/ngx-excel-template"
   },
   "private": true,
   "dependencies": {
@@ -19,6 +19,8 @@
     "@angular/platform-browser": "~8.2.4",
     "@angular/platform-browser-dynamic": "~8.2.4",
     "@angular/router": "~8.2.4",
+    "ngx-excel-template": "0.0.5",
+    "xlsx": "^0.15.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

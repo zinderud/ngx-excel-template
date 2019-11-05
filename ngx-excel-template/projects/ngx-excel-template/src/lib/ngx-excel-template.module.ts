@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { NgxExcelTemplateComponent } from './ngx-excel-template.component';
+import { NgxExcelTemplateService } from './ngx-excel-template.service';
 
 
 
@@ -7,6 +8,7 @@ import { NgxExcelTemplateComponent } from './ngx-excel-template.component';
   declarations: [NgxExcelTemplateComponent],
   imports: [
   ],
-  exports: [NgxExcelTemplateComponent]
+  exports: [NgxExcelTemplateComponent],
+  providers: [{provide: NgxExcelTemplateService, useClass: NgxExcelTemplateService}]
 })
 export class NgxExcelTemplateModule { }
